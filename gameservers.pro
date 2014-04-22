@@ -8,7 +8,8 @@ QML_IMPORT_PATH =
 
 # The .cpp file which was generated for your project. Feel free to hack it.
 SOURCES += main.cpp \
-    pinger.cpp
+    pinger.cpp \
+    serversmodel.cpp
 
 # Installation path
 # target.path =
@@ -18,4 +19,10 @@ include(qtquick2controlsapplicationviewer/qtquick2controlsapplicationviewer.pri)
 qtcAddDeployment()
 
 HEADERS += \
-    pinger.h
+    pinger.h \
+    serversmodel.h
+
+CONFIG += c++11
+
+RESOURCES += \
+    images.qrc

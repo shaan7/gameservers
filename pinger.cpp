@@ -1,6 +1,9 @@
 #include "pinger.h"
 
 #include <QUrl>
+#include <QTimer>
+
+#include <QDebug>
 
 namespace {
     char peer0_0[] = {
@@ -13,28 +16,37 @@ namespace {
     };
 }
 
-Pinger::Pinger(QObject *parent) :
-    QObject(parent)
+Pinger::Pinger(const QHostAddress &host, quint16 port, QObject *parent)
+    : m_host(host)
+    , m_port(port)
+    , QObject(parent)
 {
     connect(&m_socket, &QUdpSocket::readyRead, this, &Pinger::readDataFromSocket);
 }
 
-void Pinger::ping(const QString &host, quint16 port)
+void Pinger::initiatePing()
 {
-    m_socket.close();
-    m_socket.connectToHost(QHostAddress(host), port);
-    m_socket.write(peer0_0);
+    reconnect();
 
+    m_socket.write(peer0_0);
     m_pingStartTime = QTime::currentTime();
+
+    QTimer::singleShot(2000, this, SLOT(initiatePing()));
 }
 
 void Pinger::readDataFromSocket()
 {
-    m_lastLatency = QTime::currentTime().msec() - m_pingStartTime.msec();
+    m_lastLatency = QTime::currentTime().msecsSinceStartOfDay() - m_pingStartTime.msecsSinceStartOfDay();
     Q_EMIT latencyChanged();
 }
 
 int Pinger::latency() const
 {
     return m_lastLatency;
+}
+
+void Pinger::reconnect()
+{
+    m_socket.close();
+    m_socket.connectToHost(m_host, m_port);
 }
