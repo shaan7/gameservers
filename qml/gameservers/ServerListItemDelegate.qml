@@ -8,9 +8,10 @@ Item {
             Layout.fillWidth: true
             Layout.fillHeight: styleData.selected
 
-            color: "white"
+            color: styleData.column === 2 ? calculateColor(text) : "white"
             elide: styleData.elideMode
             text: styleData.value ? styleData.value : ""
+            font.pointSize: styleData.selected ? 13 : 10
         }
 
         Text {
@@ -19,5 +20,11 @@ Item {
             color: styleData.textColor
             elide: styleData.elideMode
         }
+    }
+
+    function calculateColor(value) {
+        if (value < 100)    return "green";
+        if (value > 100 && value < 200)    return "yellow";
+        return "red";
     }
 }

@@ -6,7 +6,7 @@ import com.thoughtworks.gameservers 1.0 as TW
 
 ApplicationWindow {
     title: qsTr("Game Servers")
-    width: 640
+    width: 600
     height: 480
 
     ColumnLayout {
@@ -30,9 +30,9 @@ ApplicationWindow {
 
             model: TW.ServersModel {}
 
-            TableViewColumn { role: "host"; title: "Server"; width: table.width*0.6 }
-            TableViewColumn { role: "port"; title: "Port"; width: table.width*0.2 }
-            TableViewColumn { role: "ping"; title: "Ping"; width: table.width*0.2 }
+            TableViewColumn { role: "host"; title: "Server"; width: table.width*0.7 }
+            TableViewColumn { role: "port"; title: "Port"; width: table.width*0.15 }
+            TableViewColumn { role: "ping"; title: "Ping"; width: table.width*0.15 }
 
             rowDelegate: Rectangle {
                 height: styleData.selected ? 48 : 24
